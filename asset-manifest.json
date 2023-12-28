@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/holdstation09/static/css/main.14b1e65b.css",
+    "main.js": "/holdstation09/static/js/main.c0b9290f.js",
+    "static/js/787.f22b8f29.chunk.js": "/holdstation09/static/js/787.f22b8f29.chunk.js",
+    "static/media/trash-can.svg": "/holdstation09/static/media/trash-can.70abce2a959d091b8ae1089bb18f1f95.svg",
+    "index.html": "/holdstation09/index.html",
+    "static/media/reload-icon.svg": "/holdstation09/static/media/reload-icon.381e433df4889a7e78d1754ecea28faf.svg",
+    "static/media/search-icon.svg": "/holdstation09/static/media/search-icon.b14bca73eabe5fd35b88d0d55228b5d2.svg",
+    "static/media/insert-icon.svg": "/holdstation09/static/media/insert-icon.20f6f433f27897d0f01c55cf25092dd8.svg",
+    "main.14b1e65b.css.map": "/holdstation09/static/css/main.14b1e65b.css.map",
+    "main.c0b9290f.js.map": "/holdstation09/static/js/main.c0b9290f.js.map",
+    "787.f22b8f29.chunk.js.map": "/holdstation09/static/js/787.f22b8f29.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.14b1e65b.css",
+    "static/js/main.c0b9290f.js"
+  ]
+}
