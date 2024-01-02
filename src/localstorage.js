@@ -61,6 +61,7 @@ function removeAddressFromLocalStorage(address) {
 }
 
 function Recent({ data, click }) {
+  const [isButtonDisabled, setButtonDisabled] = useState(false);
   const [input, setInput] = useState("");
   const [renderCount, setRenderCount] = useState(0);
   const recent = JSON.parse(localStorage.getItem("address")) || [];
@@ -71,13 +72,18 @@ function Recent({ data, click }) {
 
   const handleClick = () => {
     CallApi(input);
+
     setRenderCount(renderCount + 1);
   };
 
   const handleClickReload = () => {
+    setButtonDisabled(true);
     let storedAddress = JSON.parse(localStorage.getItem("address")) || [];
     data(storedAddress.toString());
     click(true);
+    setInterval(() => {
+      setButtonDisabled(false);
+    }, 3000);
   };
 
   const handleClickDelete = (e) => {
@@ -100,7 +106,7 @@ function Recent({ data, click }) {
           </button>
         </div>
         <div>
-          <button onClick={handleClickReload}>
+          <button disabled={isButtonDisabled} onClick={handleClickReload}>
             <img src={reload} alt="reload" />
           </button>
         </div>
