@@ -1,61 +1,22 @@
-import { ethers } from "ethers";
-import { addAddressToLocalStorage } from "./localstorage";
+import { Provider, types } from "zksync-ethers";
 
-// api url:
-const api =
-  "https://gateway.holdstation.com/services/launchpad/api/staking/wallets?list=";
+export async function ZkCheckBalance(addressCheck) {
+  const divider = 1000000000000000000;
 
-// filter userinput
-function onlyUnique(value, index, array) {
-  return array.indexOf(value) === index;
-}
+  const provider = Provider.getDefaultProvider(types.Network.Mainnet);
 
-function Table({ value }) {
-  return (
-    <div className="pt-12 w-11/12 flex justify-center">
-      <table className="border-collapse border border-slate-400">
-        <thead className="bg-slate-400">
-          <tr>
-            <th className="pl-2 pr-20 py-1 text-left">Address</th>
-            <th className="px-16 py-1 text-left">Pending Reward</th>
-            <th className="px-16 py-1 text-left">Harvested Reward</th>
-          </tr>
-        </thead>
-        <tbody>
-          {value.map((data, index) => (
-            <tr key={index}>
-              <td className="pl-2 pr-16 py-2 text-left">{data[0].address}</td>
-              <td className="px-16 py-2 text-left">{data[0].pendingReward}</td>
-              <td className="px-16 py-2 text-left">
-                {data[0].harvestedReward}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+  const account = addressCheck;
+  const holdAddress = "0xed4040fD47629e7c8FBB7DA76bb50B3e7695F0f2";
+
+  const get_ETHBalance = await provider.getBalance(account);
+  const get_HOLDBalance = await provider.getBalance(
+    account,
+    "latest",
+    holdAddress
   );
+
+  const ETHBalance = Number(get_ETHBalance) / divider;
+  const HOLDBalance = Number(get_HOLDBalance) / divider;
+
+  return { account, ETHBalance, HOLDBalance };
 }
-
-async function CallApi(address) {
-  let input = address.split(",").map((item) => item.trim());
-  input = input.filter(onlyUnique).filter((address) => {
-    if (!ethers.isAddress(address)) {
-      return false;
-    } else {
-      return true;
-    }
-  });
-  for (let key in input) {
-    addAddressToLocalStorage(input[key]);
-  }
-
-  const value = input.map(async (value) => {
-    const res = await fetch(api + value);
-    return await res.json();
-  });
-  return await Promise.all(value);
-}
-
-export default CallApi;
-export { Table };
