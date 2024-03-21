@@ -3,6 +3,7 @@ import { ZkCheckBalance } from "./callAPI";
 import search from "./img/search-icon.svg";
 import "./content.css";
 import { AddressDefault } from "./data";
+import { formatAddress } from "./formatAddress";
 
 const defaultValue = AddressDefault.join("\n");
 
@@ -24,6 +25,7 @@ function Content() {
             address: response.account,
             ETHBalance: response.ETHBalance,
             HOLDBalance: response.HOLDBalance,
+            USDCBalance: response.USDCBalance,
           },
         ]);
       } catch (error) {
@@ -37,7 +39,6 @@ function Content() {
     address.forEach((value) => {
       getData(value);
     });
-    console.log("re-render");
   }, [address]);
 
   function handleClick() {
@@ -62,13 +63,20 @@ function Content() {
     totalHOLD += value;
   }
 
+  let totalUSDC = 0;
+  for (const value of data.map((value) => value.USDCBalance)) {
+    totalUSDC += value;
+  }
+
   const handleTextareaChange = (event) => {
     setTextareaValue(event.target.value);
   };
 
+  console.log(data);
+
   return (
     <div>
-      <div className="flex">
+      <div className="lg:flex">
         <div className="pt-10 pl-8 w-1/2">
           <h1 className="text-3xl font-bold">CHECKING ETH & HOLD BALANCE</h1>
           <p className="font-bold">ZKSync Era - Mainnet</p>
@@ -77,8 +85,8 @@ function Content() {
               rows={18}
               cols={80}
               className="border-b-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] outline-none"
-              value={textareaValue === "" ? defaultValue : textareaValue}
               onChange={handleTextareaChange}
+              value={textareaValue}
             />
             <div className="md:w-fit block md:inline-block md:pl-2">
               <button
@@ -98,7 +106,9 @@ function Content() {
               <tr>
                 <th>Address</th>
                 <th>ETH Balance</th>
+                <th>USDC Balance</th>
                 <th>HOLD Balance</th>
+                <th>HOLD Staking</th>
               </tr>
               {data.map((value, idx) => (
                 <tr className={idx}>
@@ -107,13 +117,18 @@ function Content() {
                       href={`https://debank.com/profile/${value.address}`}
                       target="blank"
                     >
-                      {value.address}
+                      {formatAddress(value.address)}
                     </a>
                   </td>
                   <td>
                     {Number(value.ETHBalance.toFixed(4)) === 0
                       ? 0
                       : value.ETHBalance.toFixed(4)}
+                  </td>
+                  <td>
+                    {Number(value.USDCBalance.toFixed(4)) === 0
+                      ? 0
+                      : value.USDCBalance.toFixed(4)}
                   </td>
                   <td>
                     {Number(value.HOLDBalance.toFixed(4)) === 0
@@ -125,6 +140,7 @@ function Content() {
               <tr>
                 <th>Total:</th>
                 <th>{totalETH.toFixed(4)} ETH</th>
+                <th>{totalUSDC.toFixed(4)} USDC</th>
                 <th>{totalHOLD.toFixed(4)} HOLD</th>
               </tr>
             </table>
